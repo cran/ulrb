@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -63,7 +63,7 @@ classified_table %>%
 # Simple automation example
 define_rb(nice_tidy, automatic =  TRUE)
 
-## ---- fig.height = 6, fig.width = 6-------------------------------------------
+## ----fig.height = 6, fig.width = 6--------------------------------------------
 # One sample as example
 plot_ulrb_clustering(classified_table, 
                        sample_id = selected_samples[1],
@@ -77,7 +77,7 @@ plot_ulrb_clustering(classified_table,
                      log_scaled = TRUE) +
   labs(title = "Clustering for all samples")
 
-## ---- fig.width = 10----------------------------------------------------------
+## ----fig.width = 10-----------------------------------------------------------
 # One sample as example
 plot_ulrb_silhouette(classified_table,
                      sample_id = selected_samples[1],
@@ -92,7 +92,7 @@ plot_ulrb_silhouette(classified_table,
   labs(title = "Silhouette plot of all samples")
 
 
-## ---- fig.width = 10----------------------------------------------------------
+## ----fig.width = 10-----------------------------------------------------------
 # For a single sample
 plot_ulrb(classified_table,
           sample_id =  selected_samples[1],

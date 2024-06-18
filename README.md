@@ -6,11 +6,10 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/pascoalf/ulrb/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pascoalf/ulrb/actions/workflows/R-CMD-check.yaml)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ulrb)](https://cran.r-project.org/package=ulrb)
 [![test-coverage](https://github.com/pascoalf/ulrb/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/pascoalf/ulrb/actions/workflows/test-coverage.yaml)
 [![GPLv3
 license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
-![GitHub all
-releases](https://img.shields.io/github/downloads/pascoalf/ulrb/total)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
@@ -41,8 +40,13 @@ website: link.
 
 ## Installation
 
-You can install the development version of ulrb from
-[GitHub](https://github.com/) with:
+To install the last stable version, use:
+
+``` r
+install.packages("ulrb")
+```
+
+If you want to install the last version available on GitHub, use:
 
 ``` r
 # install.packages("devtools")
@@ -138,7 +142,7 @@ plot_ulrb(nice_classification_results, taxa_col = "OTU", plot_all = TRUE)
 #> Removed 197 rows containing missing values (`geom_segment()`).
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 ``` r
 
@@ -146,4 +150,4 @@ plot_ulrb(nice_classification_results, taxa_col = "OTU", plot_all = TRUE)
 plot_ulrb(nice_classification_results, taxa_col = "OTU", sample_id = "ERR2044662")
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />

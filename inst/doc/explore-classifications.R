@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -59,13 +59,13 @@ nice_tidy <- prepare_tidy_data(nice,
 ## -----------------------------------------------------------------------------
 rb_default <- define_rb(nice_tidy)
 
-## ---- fig.width=5, fig.height=4-----------------------------------------------
+## ----fig.width=5, fig.height=4------------------------------------------------
 plot_ulrb_clustering(rb_default, 
                      sample_id = "ERR2044662",
                      taxa_col = "OTU",
                      log_scaled = TRUE)
 
-## ---- fig.width=8, fig.height=8-----------------------------------------------
+## ----fig.width=8, fig.height=8------------------------------------------------
 plot_ulrb_clustering(rb_default, 
                      taxa_col = "OTU",
                      log_scaled = TRUE,
@@ -74,14 +74,14 @@ plot_ulrb_clustering(rb_default,
 ## -----------------------------------------------------------------------------
 rb_k2 <- define_rb(nice_tidy, classification_vector = c("Rare", "Abundant"))
 
-## ---- fig.width = 5, fig.height= 4--------------------------------------------
+## ----fig.width = 5, fig.height= 4---------------------------------------------
 plot_ulrb_clustering(rb_k2,
                      taxa_col = "OTU",
                      plot_all = TRUE, 
                      log_scaled = TRUE, 
                      colors = c("#009E73", "#F0E442"))
 
-## ---- fig.width=15------------------------------------------------------------
+## ----fig.width=15-------------------------------------------------------------
 gridExtra::grid.arrange(
   plot_ulrb_clustering(rb_default, 
                      taxa_col = "OTU",
@@ -101,7 +101,7 @@ rb_k4 <- define_rb(nice_tidy,
                    classification_vector = c("very rare", "rare", "abundant", "very abundant"))
 #
 
-## ---- fig.width=15, fig.height=4----------------------------------------------
+## ----fig.width=15, fig.height=4-----------------------------------------------
 # One sample as example
 plot_ulrb(rb_k4,
           sample_id = "ERR2044662", 
@@ -109,7 +109,7 @@ plot_ulrb(rb_k4,
           colors = c("#009E73", "#F0E442", "grey","#CC79A7"),
           log_scaled = TRUE)
 
-## ---- fig.width=15, fig.height=8----------------------------------------------
+## ----fig.width=15, fig.height=8-----------------------------------------------
 # all samples
 plot_ulrb(rb_k4,
           taxa_col = "OTU",
@@ -122,7 +122,7 @@ plot_ulrb(rb_k4,
 rb_k5 <- define_rb(nice_tidy, 
                    classification_vector = c("very rare", "rare", "undetermined", "abundant", "very abundant"))
 
-## ---- fig.width=15, fig.height=4----------------------------------------------
+## ----fig.width=15, fig.height=4-----------------------------------------------
 # One sample as example
 plot_ulrb(rb_k5,
           sample_id = "ERR2044662", 
@@ -130,7 +130,7 @@ plot_ulrb(rb_k5,
           colors = qualitative_colors[1:5],
           log_scaled = TRUE)
 
-## ---- fig.width=15, fig.height=8----------------------------------------------
+## ----fig.width=15, fig.height=8-----------------------------------------------
 # All samples
 plot_ulrb(rb_k5,
           taxa_col = "OTU",
@@ -142,7 +142,7 @@ plot_ulrb(rb_k5,
 #
 rb_k1 <- define_rb(nice_tidy, classification_vector = c("rare"))
 
-## ---- fig.width=5, fig.height=4-----------------------------------------------
+## ----fig.width=5, fig.height=4------------------------------------------------
 plot_ulrb_clustering(rb_k1, 
                      taxa_col = "OTU", 
                      colors = "green4", 
@@ -188,7 +188,7 @@ check_DB(nice_tidy, sample_id = selected_samples[1])
 # To plot results
 check_DB(nice_tidy, sample_id = selected_samples[1], with_plot = TRUE)
 
-## Calinsky-Harabasz index
+## Calinski-Harabasz index
 # To get values
 check_CH(nice_tidy, sample_id = selected_samples[1])
 
@@ -212,8 +212,8 @@ suggest_k(nice_tidy)
 # best k for Davies-Bouldin
 suggest_k(nice_tidy, index = "Davies-Bouldin")
 
-# best k for Calinsky-Harabasz
-suggest_k(nice_tidy, index = "Calinsky-Harabasz")
+# best k for Calinski-Harabasz
+suggest_k(nice_tidy, index = "Calinski-Harabasz")
 
 ## -----------------------------------------------------------------------------
 automatic_classification <- define_rb(nice_tidy, automatic = TRUE)
@@ -225,7 +225,7 @@ plot_ulrb(automatic_classification, taxa_col = "OTU", plot_all = TRUE)
 ## -----------------------------------------------------------------------------
 more_complex_automatic_classification <- define_rb(nice_tidy, 
                                                    automatic = TRUE,
-                                                   index = "Calinsky-Harabasz",
+                                                   index = "Calinski-Harabasz",
                                                    range = 4:6)
 
 ## -----------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -61,7 +61,7 @@ nice_tidy <- prepare_tidy_data(nice, ## data to tidy
                   samples_in = "cols") ## samples can be in columns (cols) or rows. 
 
 
-## ---- fig.width = 6, fig.height = 4.5-----------------------------------------
+## ----fig.width = 6, fig.height = 4.5------------------------------------------
 ## First, check how many reads each sample got
 nice_tidy %>% 
   group_by(Sample) %>% ## because data is in tidy format
@@ -117,7 +117,7 @@ nice_diversity_tidy <- nice_diversity %>%
   # order diversity index names
   mutate(Index = factor(Index, c("Number of OTUs", "Shannon Index","Simpson Index")))
 
-## ---- fig.width = 6, fig.height = 4.5-----------------------------------------
+## ----fig.width = 6, fig.height = 4.5------------------------------------------
 qualitative_colors <- 
   c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
@@ -134,7 +134,7 @@ nice_diversity_tidy %>%
   labs(col = "Classification: ",
        title = "Alpha diversity across month")
 
-## ---- fig.width = 6, fig.height = 4.5-----------------------------------------
+## ----fig.width = 6, fig.height = 4.5------------------------------------------
 nice_diversity_tidy %>% 
   ggplot(aes(Water.mass, Diversity, col = Classification)) + 
   geom_point() + 
@@ -183,7 +183,7 @@ rb_env <- rb_env %>%
                                TRUE ~ qualitative_colors[3])) %>% 
   mutate()
 
-## ---- fig.height = 8, fig.width= 8--------------------------------------------
+## ----fig.height = 8, fig.width= 8---------------------------------------------
 cca_plot_rare_biosphere <- 
   cca(rb_sp[,-1], display = "sites", scale = TRUE) %>% 
   plot(display = "sites", type = "p", main = "Rare biosphere")
