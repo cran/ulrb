@@ -9,10 +9,10 @@ plot_ulrb_silhouette(
   sample_id = NULL,
   taxa_col,
   samples_col = "Sample",
-  plot_all = FALSE,
+  plot_all = TRUE,
   classification_col = "Classification",
   silhouette_score = "Silhouette_scores",
-  colors = c("#009E73", "#F0E442", "#CC79A7"),
+  colors = c("#009E73", "grey41", "#CC79A7"),
   log_scaled = FALSE,
   ...
 )
@@ -46,17 +46,17 @@ Plots the Silhouette scores from the clustering results of \code{\link[=define_r
 }
 \details{
 This works as a sanity check of the results obtained by the unsupervised learning method used
-to classify species. This is specially important if you used an automatic number of clusters.
+to classify taxa. This is specially important if you used an automatic number of clusters.
 
 The function works for either a single sample (that you specify with sample_id argument), or
-it can apply a centrality metric for species across all your samples (plot_all = TRUE).
+it can apply a centrality metric for taxa across all your samples (plot_all = TRUE).
 
 For more details on Silhouette score, see \code{\link[=check_avgSil]{check_avgSil()}} and \code{\link[cluster:silhouette]{cluster::silhouette()}}.
 
 \strong{Interpretation of Silhouette plot}
 
 Based on chapter 2 of "Finding Groups in Data: An Introduction to Cluster Analysis."
-(Kaufman and Rousseeuw, 1991); a possible (\strong{subjective}) interpretation of the clustering structure based
+(Kaufman and Rousseeuw, 1991); a possible interpretation of the clustering structure based
 on the Silhouette plot is:
 \itemize{
 \item 0.71-1.00 (A strong structure has been found);
@@ -73,7 +73,8 @@ classified_species <- define_rb(nice_tidy)
 plot_ulrb_silhouette(classified_species,
                        sample_id = "ERR2044669",
                        taxa_col = "OTU",
-                       abundance_col = "Abundance")
+                       abundance_col = "Abundance",
+                       plot_all = FALSE)
 # All samples in a dataset
 plot_ulrb_silhouette(classified_species,
           taxa_col = "OTU",

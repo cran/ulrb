@@ -8,12 +8,12 @@ plot_ulrb_clustering(
   data,
   sample_id = NULL,
   taxa_col,
-  plot_all = FALSE,
+  plot_all = TRUE,
   samples_col = "Sample",
   classification_col = "Classification",
   abundance_col = "Abundance",
   log_scaled = FALSE,
-  colors = c("#009E73", "#F0E442", "#CC79A7"),
+  colors = c("#009E73", "grey41", "#CC79A7"),
   ...
 )
 }
@@ -58,7 +58,8 @@ classified_species <- define_rb(nice_tidy)
 plot_ulrb_clustering(classified_species,
                        sample_id = "ERR2044669",
                        taxa_col = "OTU",
-                       abundance_col = "Abundance")
+                       abundance_col = "Abundance",
+                       plot_all = FALSE)
 # All samples in a dataset
 plot_ulrb_clustering(classified_species,
           taxa_col = "OTU",

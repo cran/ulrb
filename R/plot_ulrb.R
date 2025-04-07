@@ -6,7 +6,7 @@
 #' The plots can be done for a single sample or for all samples.
 #'
 #' The results from the main function of ulrb package, [define_rb()], will include the classification of
-#' each species (OTU, ASVs, etc) and the silhouette score obtained for each observation. Thus, to access the clustering results, there are two main plots to check:
+#' each taxa and the silhouette score obtained for each observation. Thus, to access the clustering results, there are two main plots to check:
 #'  - the rank abundance curve obtained after ulrb classification;
 #'  - and the silhouette plot.
 #'
@@ -14,7 +14,7 @@
 #' **Interpretation of Silhouette plot**
 #'
 #' Based on chapter 2 of "Finding Groups in Data: An Introduction to Cluster Analysis."
-#' (Kaufman and Rousseeuw, 1991); a possible (**subjective**) interpretation of the clustering structure based
+#' (Kaufman and Rousseeuw, 1991); a possible interpretation of the clustering structure based
 #' on the Silhouette plot is:
 #'
 #' - 0.71-1.00 (A strong structure has been found);
@@ -61,12 +61,12 @@
 plot_ulrb <- function(data,
                       sample_id = NULL,
                       taxa_col,
-                      plot_all = FALSE,
+                      plot_all = TRUE,
                       silhouette_score = "Silhouette_scores",
                       classification_col = "Classification",
                       abundance_col = "Abundance",
                       log_scaled = FALSE,
-                      colors = c("#009E73", "#F0E442","#CC79A7"),
+                      colors = c("#009E73", "grey41","#CC79A7"),
                       ...){
   #
   if(isFALSE(plot_all)){
@@ -88,27 +88,42 @@ plot_ulrb <- function(data,
   if(!is.logical(log_scaled)){
     stop("'log_scaled' argument needs to be logical (TRUE/FALSE)")
   }
+  # store number of classifications
+  n_classifications <- length(unique(data$Classification))
+  #
+  cluster_plot <- plot_ulrb_clustering(data,
+                                       sample_id = sample_id,
+                                       taxa_col = taxa_col,
+                                       plot_all = plot_all,
+                                       classification_col = classification_col,
+                                       abundance_col = abundance_col,
+                                       log_scaled = log_scaled,
+                                       colors = colors,
+                                       ...)
+  #
+  sil_plot <- plot_ulrb_silhouette(data,
+                                  sample_id = sample_id,
+                                  taxa_col = taxa_col,
+                                  plot_all = plot_all,
+                                  classification_col = classification_col,
+                                  silhouette_score = silhouette_score,
+                                  colors = colors,
+                                  log_scaled = log_scaled,
+                                  ...)
+  #
+  if(n_classifications <= 3){
+    gridExtra::grid.arrange(
+      cluster_plot,
+      sil_plot,
+      nrow = 1,
+      ncol = 2)
+    } else {
+      gridExtra::grid.arrange(
+        cluster_plot +
+          ggplot2::guides(col = "none"),
+        sil_plot,
+        nrow = 1,
+        ncol = 2)
+        }
 
-  gridExtra::grid.arrange(
-    plot_ulrb_clustering(data,
-                         sample_id = sample_id,
-                         taxa_col = taxa_col,
-                         plot_all = plot_all,
-                         classification_col = classification_col,
-                         abundance_col = abundance_col,
-                         log_scaled = log_scaled,
-                         colors = colors,
-                         ...),
-    plot_ulrb_silhouette(data,
-                         sample_id = sample_id,
-                         taxa_col = taxa_col,
-                         plot_all = plot_all,
-                         classification_col = classification_col,
-                         silhouette_score = silhouette_score,
-                         colors = colors,
-                         log_scaled = log_scaled,
-                         ...),
-    nrow = 1,
-    ncol = 2
-  )
 }

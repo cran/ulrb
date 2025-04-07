@@ -3,10 +3,10 @@
 #' Plots the Silhouette scores from the clustering results of [define_rb()].
 #'
 #' This works as a sanity check of the results obtained by the unsupervised learning method used
-#' to classify species. This is specially important if you used an automatic number of clusters.
+#' to classify taxa. This is specially important if you used an automatic number of clusters.
 #'
 #' The function works for either a single sample (that you specify with sample_id argument), or
-#' it can apply a centrality metric for species across all your samples (plot_all = TRUE).
+#' it can apply a centrality metric for taxa across all your samples (plot_all = TRUE).
 #'
 #' For more details on Silhouette score, see [check_avgSil()] and [cluster::silhouette()].
 #'
@@ -14,7 +14,7 @@
 #' **Interpretation of Silhouette plot**
 #'
 #' Based on chapter 2 of "Finding Groups in Data: An Introduction to Cluster Analysis."
-#' (Kaufman and Rousseeuw, 1991); a possible (**subjective**) interpretation of the clustering structure based
+#' (Kaufman and Rousseeuw, 1991); a possible interpretation of the clustering structure based
 #' on the Silhouette plot is:
 #'
 #' - 0.71-1.00 (A strong structure has been found);
@@ -42,7 +42,8 @@
 #' plot_ulrb_silhouette(classified_species,
 #'                        sample_id = "ERR2044669",
 #'                        taxa_col = "OTU",
-#'                        abundance_col = "Abundance")
+#'                        abundance_col = "Abundance",
+#'                        plot_all = FALSE)
 #' # All samples in a dataset
 #' plot_ulrb_silhouette(classified_species,
 #'           taxa_col = "OTU",
@@ -60,16 +61,21 @@ plot_ulrb_silhouette <- function(data,
                                  sample_id = NULL,
                                  taxa_col,
                                  samples_col = "Sample",
-                                 plot_all = FALSE,
+                                 plot_all = TRUE,
                                  classification_col = "Classification",
                                  silhouette_score = "Silhouette_scores",
-                                 colors = c("#009E73", "#F0E442","#CC79A7"),
+                                 colors = c("#009E73", "grey41","#CC79A7"),
                                  log_scaled = FALSE,
                                  ...){
   # Check data before starting
   if(isFALSE(plot_all)){
     if(missing(sample_id)){
       stop("Are you trying to plot multiple samples? If so, please set plot_all to TRUE.")
+    }
+  }
+  if(!is.null(sample_id)){
+    if(isTRUE(plot_all)){
+      warning(paste("If you want to plot only", sample_id, "use plot_all = FALSE"))
     }
   }
   if(missing(taxa_col)){
@@ -83,7 +89,9 @@ plot_ulrb_silhouette <- function(data,
   if(!is.logical(log_scaled)){
     stop("'log_scaled' argument needs to be logical (TRUE/FALSE)")
   }
-
+  # store number of classifications
+  n_classifications <- length(unique(data$Classification))
+  #
   # Prepare data
   data <- data %>%
     rename(ID = all_of(taxa_col),
@@ -115,39 +123,57 @@ plot_ulrb_silhouette <- function(data,
                           linetype = "dashed")+
       ggplot2::coord_flip()+
       ggplot2::theme(axis.text.y = ggplot2::element_blank(),
+                     axis.text.x = ggplot2::element_text(size = 10),
+                     axis.title = ggplot2::element_text(size = 12),
                      axis.ticks.y = ggplot2::element_blank(),
                      panel.grid = ggplot2::element_blank(),
                      axis.line.x.bottom = ggplot2::element_line(),
                      axis.line.y.left = ggplot2::element_line(),
                      panel.background = ggplot2::element_blank(),
-                     legend.position = "top")+
+                     legend.text = ggplot2::element_text(size = 12)) +
+      ggplot2::theme(legend.position = ifelse(n_classifications <= 3, "top", "right"))+
       ggplot2::scale_color_manual(values = colors)+
       ggplot2::scale_fill_manual(values = colors)+
       ggplot2::labs(title = paste("Silhouette plot for", sample_id),
                     y = "Silhouette scores",
-                    x = taxa_col)
+                    x = taxa_col, col = "", fill = "")
   } else {
+    if(n_classifications > 3){
+      message("Classification label might not fit, consider changing the plot.")
+    }
     data %>%
-      ggplot2::ggplot(ggplot2::aes(x = reorder(.data$ID, -.data$Silhouette_scores),
+      group_by(.data$Sample, .add = TRUE) %>%
+      mutate(Group = paste(.data$Sample, .data$Classification, sep = "_")) %>%
+      arrange(desc(.data$Silhouette_scores)) %>%
+      mutate(uniqueRank = row_number()) %>%
+      ungroup() %>%
+      ggplot2::ggplot(ggplot2::aes(x = .data$uniqueRank, #reorder(.data$ID, -.data$Silhouette_scores),
                                    .data$Silhouette_scores,
                                    fill = .data$Classification,
                                    col = .data$Classification)) +
-      ggplot2::stat_summary(fun.data = ggplot2::mean_se)+
+      ggplot2::geom_point() +
+      ggplot2::geom_line(ggplot2::aes(group = .data$Group)) +
+      #ggplot2::stat_summary(fun.data = ggplot2::mean_se)+
       ggplot2::geom_hline(yintercept = c(0),
                           colour = c("black"),
                           linetype = "dashed")+
       ggplot2::theme(axis.text.x = ggplot2::element_blank(),
+                     axis.text.y = ggplot2::element_text(size = 10),
+                     axis.title = ggplot2::element_text(size = 12),
                      axis.ticks.x = ggplot2::element_blank(),
                      panel.grid = ggplot2::element_blank(),
                      axis.line.x.bottom = ggplot2::element_line(),
                      axis.line.y.left = ggplot2::element_line(),
                      panel.background = ggplot2::element_blank(),
-                     legend.position = "top")+
+                     legend.text = ggplot2::element_text(size = 12)) +
+      ggplot2::theme(legend.position = ifelse(n_classifications <= 3, "top", "right"))+
       ggplot2::scale_color_manual(values = colors)+
       ggplot2::scale_fill_manual(values = colors)+
       ggplot2::labs(title = paste("Silhouette plot for all samples"),
-                    y = "Mean (\U00B1 sd) Silhouette scores",
-                    x = taxa_col)
+                    #subtitle = paste("n = ", length(unique(data$Sample))),
+                    y = "Silhouette scores",
+                    x = taxa_col,
+                    col = "", fill = "")
   }
 
 }

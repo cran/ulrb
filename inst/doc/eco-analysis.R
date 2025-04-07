@@ -16,8 +16,8 @@ set.seed(123)
 
 ## -----------------------------------------------------------------------------
 # Load raw OTU table from N-ICE
-load("../data/nice_raw.rda")
-load("../data/nice_env.rda")
+data("nice_raw", package = "ulrb")
+data("nice_env", package = "ulrb")
 
 # Change name of first column
 nice_clean <- rename(nice_raw, Taxonomy = "X.SampleID")

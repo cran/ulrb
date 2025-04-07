@@ -31,7 +31,8 @@
 #' plot_ulrb_clustering(classified_species,
 #'                        sample_id = "ERR2044669",
 #'                        taxa_col = "OTU",
-#'                        abundance_col = "Abundance")
+#'                        abundance_col = "Abundance",
+#'                        plot_all = FALSE)
 #' # All samples in a dataset
 #' plot_ulrb_clustering(classified_species,
 #'           taxa_col = "OTU",
@@ -50,17 +51,22 @@
 plot_ulrb_clustering <- function(data,
                                  sample_id = NULL,
                                  taxa_col,
-                                 plot_all = FALSE,
+                                 plot_all = TRUE,
                                  samples_col = "Sample",
                                  classification_col = "Classification",
                                  abundance_col = "Abundance",
                                  log_scaled = FALSE,
-                                 colors = c("#009E73", "#F0E442","#CC79A7"),
+                                 colors = c("#009E73", "grey41","#CC79A7"),
                                  ...){
   #
   if(isFALSE(plot_all)){
     if(missing(sample_id)){
       stop("Are you trying to plot multiple samples? If so, please set plot_all to TRUE.")
+    }
+  }
+  if(!is.null(sample_id)){
+    if(isTRUE(plot_all)){
+      warning(paste("If you want to plot only", sample_id, "use plot_all = FALSE"))
     }
   }
   if(missing(taxa_col)){
@@ -74,7 +80,9 @@ plot_ulrb_clustering <- function(data,
   if(!is.logical(log_scaled)){
     stop("'log_scaled' argument needs to be logical (TRUE/FALSE)")
   }
-
+  # store number of classifications
+  n_classifications <- length(unique(data$Classification))
+  #
   data <- data %>%
     rename(ID = all_of(taxa_col),
            Sample = all_of(samples_col),
@@ -95,38 +103,57 @@ plot_ulrb_clustering <- function(data,
     make_plot <- function(){
       data %>%
         filter(.data$Sample == sample_id) %>%
+        mutate(Group = paste(.data$Sample, .data$Classification, sep = "_")) %>%
         ggplot2::ggplot(ggplot2::aes(x = reorder(.data$ID, -.data$Abundance),
                                      .data$Abundance, col = .data$Classification)) +
-        ggplot2::geom_point()+
+        ggplot2::geom_point() +
+        ggplot2::geom_line(ggplot2::aes(group = .data$Group)) +
         ggplot2::theme(axis.text.x = ggplot2::element_blank(),
+                       axis.text.y = ggplot2::element_text(size = 10),
+                       axis.title = ggplot2::element_text(size = 12),
                        axis.ticks.x = ggplot2::element_blank(),
                        panel.grid = ggplot2::element_blank(),
                        axis.line.x.bottom = ggplot2::element_line(),
                        axis.line.y.left = ggplot2::element_line(),
                        panel.background = ggplot2::element_blank(),
-                       legend.position = "top")+
+                       legend.text = ggplot2::element_text(size = 12))+
+        ggplot2::theme(legend.position = ifelse(n_classifications <= 3, "top", "right"))+
         ggplot2::scale_color_manual(values = colors)+
         ggplot2::labs(title = paste("Rank Abundance Curve for ", sample_id),
-                      x = taxa_col)
+                      x = taxa_col, col = "", fill = "")
     }
   } else {
+    if(n_classifications > 3){
+      message("Classification label might not fit, consider changing the plot.")
+    }
     make_plot <- function(){
       data %>%
-        ggplot2::ggplot(ggplot2::aes(x = reorder(.data$ID, -.data$Abundance),
+        group_by(.data$Sample, .add = TRUE) %>%
+        mutate(Group = paste(.data$Sample, .data$Classification, sep = "_")) %>%
+        arrange(desc(.data$Abundance)) %>%
+        mutate(uniqueRank = row_number()) %>%
+        ungroup() %>%
+        ggplot2::ggplot(ggplot2::aes(x = .data$uniqueRank, #reorder(.data$ID, -.data$Abundance),
                                      .data$Abundance, col = .data$Classification)) +
-        ggplot2::stat_summary(fun.data = ggplot2::mean_se)+
+        ggplot2::geom_point() +
+        ggplot2::geom_line(ggplot2::aes(group = .data$Group)) +
+        #ggplot2::stat_summary(fun.data = ggplot2::mean_se)+
         ggplot2::theme(axis.text.x = ggplot2::element_blank(),
+                       axis.text.y = ggplot2::element_text(size = 10),
+                       axis.title = ggplot2::element_text(size = 12),
                        axis.ticks.x = ggplot2::element_blank(),
                        panel.grid = ggplot2::element_blank(),
                        axis.line.x.bottom = ggplot2::element_line(),
                        axis.line.y.left = ggplot2::element_line(),
                        panel.background = ggplot2::element_blank(),
-                       legend.position = "top")+
+                       legend.text = ggplot2::element_text(size = 12))+
+        ggplot2::theme(legend.position = ifelse(n_classifications <= 3, "top", "right"))+
         ggplot2::scale_color_manual(values = colors)+
         ggplot2::labs(title = "Rank Abundance Curve for all samples",
-                      subtitle = paste("n = ", length(unique(data$Sample))),
+                      #subtitle = paste("n = ", length(unique(data$Sample))),
                       x = taxa_col,
-                      y = "Mean (\U00B1 sd) abundance")
+                      y = "Abundance",
+                      col = "")
     }
   }
 
@@ -134,10 +161,10 @@ plot_ulrb_clustering <- function(data,
     intermediate_plot <- make_plot()
     intermediate_plot +
       ggplot2::scale_y_log10()+
-      ggplot2::labs(y =
-                      ifelse(isTRUE(plot_all),
-                             "Mean (\U00B1 sd) abundance in Log10 scale",
-                             "Abundance in Log10 scale"))
+      ggplot2::labs(y ="Abundance in Log10 scale")
+#                      ifelse(isTRUE(plot_all),
+ #                            "Mean (\U00B1 sd)\n abundance in Log10 scale",
+  #                           "Abundance in Log10 scale"))
   } else {
     make_plot()
   }

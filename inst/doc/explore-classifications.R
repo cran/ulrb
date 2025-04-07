@@ -15,7 +15,7 @@ qualitative_colors <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "
 
 ## -----------------------------------------------------------------------------
 # Load raw OTU table from N-ICE
-load("../data/nice_raw.rda")
+data("nice_raw", package = "ulrb")
 
 # Change name of first column
 nice_clean <- rename(nice_raw, Taxonomy = "X.SampleID")
