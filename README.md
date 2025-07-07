@@ -9,7 +9,7 @@
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ulrb)](https://cran.r-project.org/package=ulrb)
 [![test-coverage](https://github.com/pascoalf/ulrb/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/pascoalf/ulrb/actions/workflows/test-coverage.yaml)
 [![GPLv3
-license](https://img.shields.io/badge/License-GPLv3-blue.svg)](http://perso.crans.org/besson/LICENSE.html)
+license](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://perso.crans.org/besson/LICENSE.html)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![DOI](https://zenodo.org/badge/584780462.svg)](https://doi.org/10.5281/zenodo.14922441)
@@ -39,13 +39,14 @@ website: <https://pascoalf.github.io/ulrb/>.
 
 ## Installation
 
-To install the last stable version, use:
+To install the last stable version (0.1.6), use:
 
 ``` r
 install.packages("ulrb")
 ```
 
-If you want to install the last version available on GitHub, use:
+If you want to install the last version available on GitHub (0.1.8),
+use:
 
 ``` r
 # install.packages("devtools")
@@ -159,9 +160,5 @@ rare biosphere through unsupervised machine learning. Commun Biol 8, 544
 (2025). <https://doi.org/10.1038/s42003-025-07912-4>
 
 Pascoal, F., Costa, R., Torgo, L., Magalhães, C., & Branco, P. (2025).
-ulrb: an R Package to Automatically Define Rare Taxa. Ecological
-Informatics (in Peer-Review).
-
-To cite this GitHub repository (v0.1.6): Francisco Pascoal. (2025).
-pascoalf/ulrb: v0.1.6 (v0.1.6). Zenodo.
-<https://doi.org/10.5281/zenodo.14922442>
+Architecture and implementation of ulrb algorithm in R. Ecological
+Informatics. <https://doi.org/10.1016/j.ecoinf.2025.103229>

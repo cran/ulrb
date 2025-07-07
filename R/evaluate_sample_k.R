@@ -1,7 +1,7 @@
 #' Evaluate sample k
 #'
 #' This functions calculates three indices (Davies-Bouldin, Calinsky-Harabasz and average Silhouette score) for each k.
-#' Calculations are made for a single sample and for a default range of k that goes from 3 to 10.
+#' Calculations are made for a single sample and for a default range of k that goes from 2 to 10.
 #'
 #' **Note**: To get the indices for all samples, use [evaluate_k()] instead.
 #'
@@ -52,7 +52,7 @@ evaluate_sample_k <- function(data,
                               sample_id,
                               samples_col = "Sample",
                               abundance_col = "Abundance",
-                              range = 3:10,
+                              range = 2:10,
                               with_plot = FALSE,
                               ...){
   # stop if a vector is used as input
@@ -62,6 +62,36 @@ evaluate_sample_k <- function(data,
   if(!is.numeric(pull(data, all_of(abundance_col)))){
     stop("The column with abundance scores must be numeric (integer our double type).")
   }
+
+# Ensure the range of k values is appropriate
+#    # calculate maximum k
+#  maxk = data %>%
+#    summarise(topK = length(unique(.data$Abundance))) %>%
+#    ungroup() %>%
+#    pull(.data$topK) %>%
+#    min()
+  #
+#  if(max(range) > maxk){
+#    stop(c("Adjust the range of k values. The maximum number of clusters allowed for your sample is", " ", maxk))
+#  }
+
+  # Function to calculate maximum k of a sample
+  sample_max_k <- function(data){
+    data %>%
+      filter(.data$Abundance > 0) %>%
+      count(.data$Abundance) %>%
+      pull(.data$Abundance) %>%
+      length()
+  }
+
+  maxk <- data %>% sample_max_k()
+
+  #
+  if(max(range) > maxk){
+    stop(c("Adjust the range of k values. The maximum number of clusters allowed
+           for your samples is", " ", maxk, ". Try range = 2:", maxk-1))
+  }
+
   ## One sample
   scores <- data.frame(DB = check_DB(data, sample_id = sample_id, range = range, samples_col = samples_col, abundance_col = abundance_col, ...),
                        CH = check_CH(data, sample_id = sample_id, range = range, samples_col = samples_col, abundance_col = abundance_col, ...),

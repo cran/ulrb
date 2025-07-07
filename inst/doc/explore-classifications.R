@@ -11,7 +11,7 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 # a vector with some colors
-qualitative_colors <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+qualitative_colors <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "grey50")
 
 ## -----------------------------------------------------------------------------
 # Load raw OTU table from N-ICE
@@ -217,10 +217,12 @@ suggest_k(nice_tidy, index = "Calinski-Harabasz")
 
 ## -----------------------------------------------------------------------------
 automatic_classification <- define_rb(nice_tidy, automatic = TRUE)
-
 # Plot automatic result
 
-plot_ulrb(automatic_classification, taxa_col = "OTU", plot_all = TRUE)
+plot_ulrb(automatic_classification, 
+          taxa_col = "OTU", 
+          plot_all = TRUE,
+          colors = qualitative_colors[1:2])
 
 ## -----------------------------------------------------------------------------
 more_complex_automatic_classification <- define_rb(nice_tidy, 

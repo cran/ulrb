@@ -10,7 +10,7 @@
 #'
 #' Note that DB index is not an absolute value that indicates the quality of a single clustering.
 #' Instead, it allows the comparison of clustering results. Thus, if you have several clusterings, the
-#' best one will be the one with higher DB index.
+#' best one will be the one with lowest DB index.
 #'
 #' @details
 #' **Data input**
@@ -72,12 +72,12 @@
 #'
 #' @references
 #' Davies, D. L., & Bouldin, D. W. (1979). A Cluster Separation Measure. IEEE Transactions on Pattern Analysis and Machine Intelligence, PAMI-1(2).
-#' Pascoal et al. (2025). Definition of the microbial rare biosphere through unsupervised machine learning. Communications Biology.
+#' Pascoal, F., Branco, P., Torgo, L. et al. Definition of the microbial rare biosphere through unsupervised machine learning. Commun Biol 8, 544 (2025). https://doi.org/10.1038/s42003-025-07912-4
 #'
 #' @inheritParams define_rb
 #' @param sample_id String with name of the sample to apply this function.
 #' @param samples_col String with name of column with sample names.
-#' @param range The range of values of k to test, default is from 3 to 10.
+#' @param range The range of values of k to test, default is from 2 to 10.
 #' @param with_plot If FALSE (default) returns a vector, but if TRUE will return a plot with the scores.
 #'
 #' @return A vector or plot with Davies-Bouldin index for each pre-specified k in a given sample.
@@ -103,7 +103,7 @@ check_DB <- function(data,
                      sample_id,
                      samples_col = "Sample",
                      abundance_col = "Abundance",
-                     range = 3:10,
+                     range = 2:10,
                      with_plot = FALSE, ...){
   # range can not begin at 1
   if(min(range) <= 1){

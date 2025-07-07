@@ -34,7 +34,7 @@
 #'
 #' To automatically decide the number of clusters (i.e., the value of k), it is possible to do so with the argument **automatic=TRUE**. For details on
 #' complete automation of [define_rb()], please see the documentation for [suggest_k()]. Briefly, the k with best average Silhouette score
-#' is selected from a range of k values between 3 and 10. It is possible to decide k based on other indices ("Davies-Bouldin" or "Calinsky-Harabasz").
+#' is selected from a range of k values between 2 and 10. It is possible to decide k based on other indices ("Davies-Bouldin" or "Calinsky-Harabasz").
 #'
 #' If you want a more fine grained analysis of k values, we provide several functions:
 #'  - [evaluate_k()];
@@ -124,6 +124,8 @@
 #'  and Silhouette scores. If TRUE, only the Classification result is added to the original input data.
 #' @param automatic By default (FALSE), will assume a classification into "Rare", "Undetermined" or "Abundant". If TRUE, then it will automatically select the number of classifications (or k),
 #' based on the index argument.
+#' @param check_singles Default if FALSE. If TRUE, the user is warned of the number of clusters represented by a single taxon,
+#' if any.
 #' @inheritParams suggest_k
 #'
 #' @returns The input data.frame with extra columns containing the classification and additional metrics (if detailed = TRUE).
@@ -132,7 +134,7 @@
 #'
 #' @references
 #' Kaufman, L., & Rousseuw, P. J. (1991). Chapter 2 in book Finding Groups in Data: An Introduction to Cluster Analysis. Biometrics, 47(2), 788.
-#' Pascoal et al. (2025). Definition of the microbial rare biosphere through unsupervised machine learning. Communications Biology.
+#' Pascoal, F., Branco, P., Torgo, L. et al. Definition of the microbial rare biosphere through unsupervised machine learning. Commun Biol 8, 544 (2025). https://doi.org/10.1038/s42003-025-07912-4
 #'
 #' @examples
 #' \donttest{
@@ -210,8 +212,41 @@ define_rb <- function(data,
                       simplified = FALSE,
                       automatic = FALSE,
                       index = "Average Silhouette Score",
-                      ...) {
+                      check_singles = FALSE,
+                      ...){
+  # Match samples_col and abundance_col with Samples and Abundance, respectively
+  data <-
+    data %>%
+    rename(Sample = all_of(samples_col),
+           Abundance = all_of(abundance_col))
 
+  # Verify possible k values
+
+  # Function to calculate maximum k of a sample
+    sample_max_k <- function(data){
+    data %>%
+      filter(.data$Abundance > 0) %>%
+      count(.data$Abundance) %>%
+      pull(.data$Abundance) %>%
+      length()
+    }
+  # Summary of maximum k possible of each sample
+  maxk_summary <- data %>%
+    group_by(.data$Sample) %>%
+    tidyr::nest() %>%
+      mutate(maxk = purrr::map(.x = data, .f = ~sample_max_k(.x))) %>%
+    tidyr::unnest(maxk)
+
+  if(sum(maxk_summary[, "maxk"] < 3) != 0){
+    samples_to_remove <- maxk_summary %>%
+      filter(maxk <= 3) %>%
+      pull(Sample)
+    # Remove samples with maxk < 3
+    data <- data %>%
+      filter(!Sample %in% samples_to_remove)
+    # Warn user of samples discarded
+    warning(c("Samples with less than 3 different species were discarded:", paste(samples_to_remove, collapse = ",")))
+  }
 
   #If automatic, use suggest_k()
   if(isTRUE(automatic)){
@@ -224,11 +259,6 @@ define_rb <- function(data,
   # Define number of cluster based on possible classifications
   k <- length(classification_vector)
 
-  # Match samples_col and abundance_col with Samples and Abundance, respectively
-  data <-
-    data %>%
-    rename(Sample = all_of(samples_col),
-           Abundance = all_of(abundance_col))
 
   # Calculate k-medoids
     ## Apply cluster algorithm
@@ -289,6 +319,26 @@ define_rb <- function(data,
     message("Check 'Evaluation' collumn for more details.")
   }
 
+  if(check_singles == TRUE){
+  # verify if any cluster is represented by a single taxon
+  single_tax_clusters <- classified_clusters %>%
+    group_by(.data$Sample, .data$Classification) %>%
+    count() %>%
+    filter(n == 1)
+
+  samples_with_single_tax_cluster <-  single_tax_clusters %>%
+    pull(Sample) %>%
+    unique()
+
+  n_single_clusters <- length(samples_with_single_tax_cluster)
+
+  # warn user if there are clusters with a single taxon
+  if(n_single_clusters > 1){
+    warning(
+      paste0("There are ",
+             n_single_clusters,
+             " samples with a cluster represented by a single taxon."))
+  }}
 
   # Option to simplify
   if(simplified == TRUE){

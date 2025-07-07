@@ -2,7 +2,7 @@ Package: ulrb
 Type: Package
 Title: Unsupervised Learning Based Definition of Microbial Rare
         Biosphere
-Version: 0.1.6
+Version: 0.1.8
 Authors@R: c(
     person("Francisco", "Pascoal",,"fpascoal1996@gmail.com", role = c("aut","cre"), comment = c(ORCID = "0000-0003-2315-358X")),
     person("Paula", "Branco",,"paobranco@gmail.com", role = c("aut"), comment = c(ORCID = "0000-0002-9917-3694")),
@@ -10,12 +10,11 @@ Authors@R: c(
     person("Rodrigo", "Costa",,"rodrigoscosta@tecnico.ulisboa.pt", role = c("aut"), comment = c(ORCID = "0000-0002-5932-4101")),
     person("Catarina", "Magalhães",,"catarinamagalhaes1972@gmail.com", role = c("aut"), comment = c(ORCID = "0000-0001-9576-2398")))
 Maintainer: Francisco Pascoal <fpascoal1996@gmail.com>
-Date: 2025-04-02
-Description: A tool to define rare biosphere. 'ulrb' solves the problem of the 
+Date: 2025-07-07
+Description: A tool to define the rare biosphere. 'ulrb' solves the problem of the 
     definition of rarity by replacing arbitrary thresholds with an unsupervised machine 
     learning algorithm (partitioning around medoids, or k-medoids). This algorithm 
     works for any type of microbiome data, provided there is an abundance table.
-    For validation of this method to different abundance tables, see Pascoal et al, 2025.
     This method also works for non-microbiome data.
 License: GPL (>= 3)
 Encoding: UTF-8
@@ -30,11 +29,13 @@ VignetteBuilder: knitr
 URL: https://pascoalf.github.io/ulrb/
 BugReports: https://github.com/pascoalf/ulrb/issues
 NeedsCompilation: no
-Packaged: 2025-04-07 08:50:20 UTC; fpascoal
-Author: Francisco Pascoal [aut, cre] (<https://orcid.org/0000-0003-2315-358X>),
-  Paula Branco [aut] (<https://orcid.org/0000-0002-9917-3694>),
-  Luís Torgo [aut] (<https://orcid.org/0000-0002-6892-8871>),
-  Rodrigo Costa [aut] (<https://orcid.org/0000-0002-5932-4101>),
-  Catarina Magalhães [aut] (<https://orcid.org/0000-0001-9576-2398>)
+Packaged: 2025-07-07 07:47:08 UTC; fpascoal
+Author: Francisco Pascoal [aut, cre] (ORCID:
+    <https://orcid.org/0000-0003-2315-358X>),
+  Paula Branco [aut] (ORCID: <https://orcid.org/0000-0002-9917-3694>),
+  Luís Torgo [aut] (ORCID: <https://orcid.org/0000-0002-6892-8871>),
+  Rodrigo Costa [aut] (ORCID: <https://orcid.org/0000-0002-5932-4101>),
+  Catarina Magalhães [aut] (ORCID:
+    <https://orcid.org/0000-0001-9576-2398>)
 Repository: CRAN
-Date/Publication: 2025-04-07 09:50:02 UTC
+Date/Publication: 2025-07-07 08:50:02 UTC

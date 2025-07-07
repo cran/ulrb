@@ -578,10 +578,10 @@ regarding k, using several metrics.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Simple automation example</span></span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">define_rb</span>(nice_tidy, <span class="at">automatic =</span>  <span class="cn">TRUE</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt; Automatic option set to TRUE, so classification vector was overwritten</span></span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; K= 3 based on Average Silhouette Score.</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt; K= 2 based on Average Silhouette Score.</span></span>
 <span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; Joining with `by = join_by(Sample, Level)`</span></span>
 <span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2,177 × 17</span></span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; # Groups:   Sample, Classification [27]</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; # Groups:   Sample, Classification [18]</span></span>
 <span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt;    Sample    Classification OTU   Domain Phylum Class Order Family Genus Species</span></span>
 <span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;     &lt;fct&gt;          &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;  </span></span>
 <span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co">#&gt;  1 ERR20446… 1              OTU_2 sk__A… p__Eu… c__C… &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;   </span></span>
@@ -589,11 +589,11 @@ regarding k, using several metrics.</p>
 <span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#&gt;  3 ERR20446… 1              OTU_6 sk__A… p__Th… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;   </span></span>
 <span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt;  4 ERR20446… 1              OTU_7 sk__A… p__Th… c__   o__   f__    g__C… &lt;NA&gt;   </span></span>
 <span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt;  5 ERR20446… 1              OTU_8 sk__A… p__Th… c__   o__N… &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;   </span></span>
-<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt;  6 ERR20446… 1              OTU_… sk__A… p__Th… c__   o__N… f__Ni… g__N… &lt;NA&gt;   </span></span>
-<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt;  7 ERR20446… 1              OTU_… sk__B… p__Ac… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;   </span></span>
-<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt;  8 ERR20446… 1              OTU_… sk__B… p__Ac… c__A… o__A… &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;   </span></span>
-<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt;  9 ERR20446… 1              OTU_… sk__B… p__Ac… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;   </span></span>
-<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; 10 ERR20446… 1              OTU_… sk__B… p__Ac… c__A… &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;   </span></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a><span class="co">#&gt;  6 ERR20446… 1              OTU_9 sk__A… p__Th… c__   o__N… f__Ni… &lt;NA&gt;  &lt;NA&gt;   </span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt;  7 ERR20446… 1              OTU_… sk__A… p__Th… c__   o__N… f__Ni… g__N… &lt;NA&gt;   </span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt;  8 ERR20446… 1              OTU_… sk__B… p__Ac… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;   </span></span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt;  9 ERR20446… 1              OTU_… sk__B… p__Ac… c__A… o__A… &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;   </span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co">#&gt; 10 ERR20446… 1              OTU_… sk__B… p__Ac… &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;  &lt;NA&gt;   </span></span>
 <span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a><span class="co">#&gt; # ℹ 2,167 more rows</span></span>
 <span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a><span class="co">#&gt; # ℹ 7 more variables: Abundance &lt;int&gt;, pam_object &lt;list&gt;, Level &lt;fct&gt;,</span></span>
 <span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a><span class="co">#&gt; #   Silhouette_scores &lt;dbl&gt;, Cluster_median_abundance &lt;dbl&gt;,</span></span>
@@ -730,10 +730,10 @@ samples.</p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
-<p>Pascoal, F., Branco, P., Torgo, L. et al. Definition of the microbial
-rare biosphere through unsupervised machine learning. Commun Biol 8, 544
-(2025). <a href="https://doi.org/10.1038/s42003-025-07912-4" class="uri">https://doi.org/10.1038/s42003-025-07912-4</a></p>
 <ul>
+<li><p>Pascoal, F., Branco, P., Torgo, L. et al. Definition of the
+microbial rare biosphere through unsupervised machine learning. Commun
+Biol 8, 544 (2025). <a href="https://doi.org/10.1038/s42003-025-07912-4" class="uri">https://doi.org/10.1038/s42003-025-07912-4</a></p></li>
 <li><p>Granskog, M. A., Fer, I., Rinke, A., &amp; Steen, H. (2018).
 Atmosphere-Ice-Ocean-Ecosystem Processes in a Thinner Arctic Sea Ice
 Regime: The Norwegian Young Sea ICE (N-ICE2015) Expedition. Journal of

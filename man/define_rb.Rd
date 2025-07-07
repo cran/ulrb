@@ -12,6 +12,7 @@ define_rb(
   simplified = FALSE,
   automatic = FALSE,
   index = "Average Silhouette Score",
+  check_singles = FALSE,
   ...
 )
 }
@@ -31,6 +32,9 @@ and Silhouette scores. If TRUE, only the Classification result is added to the o
 based on the index argument.}
 
 \item{index}{Index used to select best k. Can be one of: "Average Silhouette Score", "Davies-Bouldin" or "Calinski-Harabasz".}
+
+\item{check_singles}{Default if FALSE. If TRUE, the user is warned of the number of clusters represented by a single taxon,
+if any.}
 
 \item{...}{Extra arguments.}
 }
@@ -70,7 +74,7 @@ and in the vignette \code{vignette("explore-classifications")}.
 
 To automatically decide the number of clusters (i.e., the value of k), it is possible to do so with the argument \strong{automatic=TRUE}. For details on
 complete automation of \code{\link[=define_rb]{define_rb()}}, please see the documentation for \code{\link[=suggest_k]{suggest_k()}}. Briefly, the k with best average Silhouette score
-is selected from a range of k values between 3 and 10. It is possible to decide k based on other indices ("Davies-Bouldin" or "Calinsky-Harabasz").
+is selected from a range of k values between 2 and 10. It is possible to decide k based on other indices ("Davies-Bouldin" or "Calinsky-Harabasz").
 
 If you want a more fine grained analysis of k values, we provide several functions:
 \itemize{
@@ -220,7 +224,7 @@ nice_tidy \%>\%
 }
 \references{
 Kaufman, L., & Rousseuw, P. J. (1991). Chapter 2 in book Finding Groups in Data: An Introduction to Cluster Analysis. Biometrics, 47(2), 788.
-Pascoal et al. (2025). Definition of the microbial rare biosphere through unsupervised machine learning. Communications Biology.
+Pascoal, F., Branco, P., Torgo, L. et al. Definition of the microbial rare biosphere through unsupervised machine learning. Commun Biol 8, 544 (2025). https://doi.org/10.1038/s42003-025-07912-4
 }
 \seealso{
 \code{\link[=suggest_k]{suggest_k()}}, \code{\link[=evaluate_k]{evaluate_k()}}, \code{\link[=plot_ulrb]{plot_ulrb()}}, \code{\link[cluster:pam]{cluster::pam()}}
